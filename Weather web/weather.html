@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Cuaca</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <script>
+        function getWeather() {
+            const cityInput=document.getElementById("cityInput")
+
+            fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityInput.value}&appid=9c17c4d23b48de8da3e80d6416fdb68e`)
+                .then(response => response.json())
+                .then(data => {
+                    const temperature = (data.main.temp - 273.15).toFixed(2); // Konversi dari Kelvin ke Celsius
+                    const description = data.weather[0].description;
+                    cityInfo.innerHTML = `Cuaca di ${data.name}`;
+                    tempInfo.innerHTML = `${temperature} Celsius`;
+                    descInfo.innerHTML = `${description}`;
+                })
+                .catch(error => {
+                    console.error('Terjadi kesalahan:', error);
+                    weatherInfo.innerHTML = 'Terjadi kesalahan saat mengambil data cuaca.';
+                });
+        }
+    </script>
+</head>
+<body>
+    <div class="weather-container">
+        <h1>Aplikasi Cuaca</h1>
+        <input type="text" id="cityInput" placeholder="Masukkan nama kota">
+        <button onclick="getWeather()">Search</button>
+
+        <div class="row row-cols-1 row-cols-md-2 g-4 m-2">
+            <div class="col">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="card-body">
+                            <h5 class="card-title">Weather</h5>
+                            <p id="descInfo" class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="cityInfo" class="text-center"></div>
+        <div class="row row-cols-1 row-cols-md-2 g-4 m-2">
+            <div class="col">
+                <div class="card">
+                    <div class="row g-0">
+                        <div class="card-body">
+                            <h5 class="card-title">Temperature</h5>
+                            <p id="tempInfo" class="card-text"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
